@@ -3,7 +3,7 @@ use std::fs;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let (query, file_path ) = parse_args(&args);
+    let cli_request: Request = parse_request(&args);
 
     println!("Searching for {query} in {file_path} ...\n...\n...");
 
@@ -15,10 +15,12 @@ fn main() {
 
 
 }
-
-fn parse_args(args: &[String]) -> (&String, &String){
-    let query: &String = &args[1];
-    let file_path: &String = &args[2];
-
-    (query, file_path)
+struct Request {
+    query: String,
+    file_path: String
+}
+fn parse_request(args: &[String]) -> Request{
+    let query: String = args[1].clone();
+    let file_path: String = args[2].clone();
+    Request{query, file_path}
 }
