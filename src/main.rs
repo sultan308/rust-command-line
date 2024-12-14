@@ -5,9 +5,9 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let cli_request: Request = parse_request(&args);
 
-    println!("Searching for {query} in {file_path} ...\n...\n...");
+    println!("Searching for {} in {} ...\n...\n...", &cli_request.query, &cli_request.file_path);
 
-    let file_contents: String = fs::read_to_string(file_path)
+    let file_contents: String = fs::read_to_string(&cli_request.file_path)
                                 .expect("Failed to read the file.");
 
     println!("Successfully read the file:\n{file_contents}")
