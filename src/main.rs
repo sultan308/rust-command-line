@@ -21,6 +21,9 @@ struct Request {
 }
 impl Request {
     fn new(args: &[String]) -> Request {
+        if args.len() < 3 {
+            panic!("not enough args given! At least 3 is required.")
+        }
         let query: String = args[1].clone();
         let file_path: String = args[2].clone();
         Request { query, file_path}
