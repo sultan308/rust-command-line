@@ -1,9 +1,13 @@
 use std::env;
 use std::fs;
+use std::process;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let cli_request: Request = Request::build(&args).unwrap();
+    let cli_request: Request = Request::build(&args).unwrap_or_else(|err|{
+        println!("Failed to parse args: {}",err);
+        process::exit(1)
+    });
 
     println!("Searching for {} in {} ...\n...\n...", &cli_request.query, &cli_request.file_path);
 
