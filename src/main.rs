@@ -1,4 +1,5 @@
 use std::env;
+use std::error::Error;
 use std::fs;
 use std::process;
 
@@ -9,7 +10,7 @@ fn main() {
         process::exit(1)
     });
     println!("Searching for {} in {} ...\n...\n...", &cli_request.query, &cli_request.file_path);
-    process(cli_request)
+    process(cli_request);
 }
 struct Request {
     query: String,
@@ -26,9 +27,8 @@ impl Request {
     }
 }
 
-fn process(request: Request){
-    let file_contents: String = fs::read_to_string(&request.file_path)
-        .expect("Failed to read the file.");
-
-    println!("Successfully read the file:\n{file_contents}")
+fn process(request: Request) -> Result<(),Box<dyn Error>>{
+    let file_contents: String = fs::read_to_string(&request.file_path)?;
+    println!("Successfully read the file:\n{file_contents}");
+    Ok(())
 }
