@@ -8,16 +8,8 @@ fn main() {
         println!("Failed to parse args: {}",err);
         process::exit(1)
     });
-
     println!("Searching for {} in {} ...\n...\n...", &cli_request.query, &cli_request.file_path);
-
-    let file_contents: String = fs::read_to_string(&cli_request.file_path)
-                                .expect("Failed to read the file.");
-
-    println!("Successfully read the file:\n{file_contents}")
-
-
-
+    process(cli_request)
 }
 struct Request {
     query: String,
@@ -32,4 +24,11 @@ impl Request {
         let file_path: String = args[2].clone();
         Ok(Request { query, file_path})
     }
+}
+
+fn process(request: Request){
+    let file_contents: String = fs::read_to_string(&request.file_path)
+        .expect("Failed to read the file.");
+
+    println!("Successfully read the file:\n{file_contents}")
 }
