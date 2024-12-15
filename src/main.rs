@@ -10,7 +10,9 @@ fn main() {
         process::exit(1)
     });
     println!("Searching for {} in {} ...\n...\n...", &cli_request.query, &cli_request.file_path);
-    process(cli_request);
+    if let Err(e) = process(cli_request) {
+        println!("Encountered the following error while fulfilling your request:\n{}", e)
+    }
 }
 struct Request {
     query: String,
