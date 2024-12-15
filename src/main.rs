@@ -10,7 +10,7 @@ fn main() {
         process::exit(1)
     });
     println!("Searching for {} in {} ...\n...\n...", &cli_request.query, &cli_request.file_path);
-    if let Err(e) = process(cli_request) {
+    if let Err(e) = handle(cli_request) {
         println!("Encountered the following error while fulfilling your request:\n{}", e);
         process::exit(1)
     }
@@ -30,7 +30,7 @@ impl Request {
     }
 }
 
-fn process(request: Request) -> Result<(),Box<dyn Error>>{
+fn handle(request: Request) -> Result<(),Box<dyn Error>>{
     let file_contents: String = fs::read_to_string(&request.file_path)?;
     println!("Successfully read the file:\n{file_contents}");
     Ok(())
