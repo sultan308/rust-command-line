@@ -11,7 +11,8 @@ fn main() {
     });
     println!("Searching for {} in {} ...\n...\n...", &cli_request.query, &cli_request.file_path);
     if let Err(e) = process(cli_request) {
-        println!("Encountered the following error while fulfilling your request:\n{}", e)
+        println!("Encountered the following error while fulfilling your request:\n{}", e);
+        process::exit(1)
     }
 }
 struct Request {
