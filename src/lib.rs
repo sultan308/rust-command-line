@@ -21,3 +21,49 @@ pub fn handle(request: Request) -> Result<(),Box<dyn Error>>{
     println!("Successfully read the file:\n{file_contents}");
     Ok(())
 }
+
+pub fn find_lines<'a>(query: &str, content: &'a str) -> Vec<&'a str>{
+    let mut lines_found:Vec<&str> = Vec::new();
+    for line in content.lines(){
+        if line.contains(query){
+            lines_found.push(line);
+        }
+    }
+    lines_found
+}
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+    #[test]
+    fn find_lines_one_line(){
+        let query: String = String::from("bird");
+
+        let content = "\
+Or the blue parakeet does not return
+from the little grave in the fern garden
+though one may wake in the morning
+thinking mother's call is the bird.";
+
+        assert_eq!(
+            vec!["thinking mother's call is the bird."],
+            find_lines(&query, content)
+        );
+    }
+    #[test]
+    fn find_lines_two_lines(){
+        let query: String = String::from("in ");
+
+        let content = "\
+Or the blue parakeet does not return
+from the little grave in the fern garden
+though one may wake in the morning
+thinking mother's call is the bird.";
+
+        assert_eq!(
+            vec!["from the little grave in the fern garden",
+            "though one may wake in the morning"],
+            find_lines(&query, content)
+        );
+    }
+}
