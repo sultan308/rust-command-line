@@ -1,9 +1,10 @@
 use std::error::Error;
 use std::fs;
-
+use std::env;
 pub struct Request {
     pub query: String,
-    pub file_path: String
+    pub file_path: String,
+    pub ignore_case: bool
 }
 impl Request {
     pub fn build(args: &[String]) -> Result<Request, &'static str> {
@@ -12,7 +13,8 @@ impl Request {
         }
         let query: String = args[1].clone();
         let file_path: String = args[2].clone();
-        Ok(Request { query, file_path})
+        let ignore_case: bool = env::var("IGNORE_CASE").is_ok();
+        Ok(Request { query, file_path, ignore_case})
     }
 }
 
