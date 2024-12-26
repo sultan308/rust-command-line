@@ -21,7 +21,14 @@ impl Request {
 pub fn handle(request: Request) -> Result<(),Box<dyn Error>>{
     let file_contents: String = fs::read_to_string(&request.file_path)?;
     println!("Successfully read the file:\n");
-    for line_found in find_lines(&request.query, &file_contents){
+
+    let lines_found: Vec<&str> = if request.ignore_case {
+        case_insensitive_find_lines(&request.query, &file_contents)
+    } else {
+        find_lines(&request.query, &file_contents)
+    };
+
+    for line_found in lines_found{
         println!("{line_found}")
     }
     Ok(())
