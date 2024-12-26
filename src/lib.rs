@@ -34,13 +34,22 @@ pub fn find_lines<'a>(query: &str, content: &'a str) -> Vec<&'a str>{
     }
     lines_found
 }
+pub fn case_insensitive_find_lines<'a>(query: &str, content: &'a str) -> Vec<&'a str>{
+    let mut lines_found:Vec<&str> = Vec::new();
+    for line in content.lines(){
+        if line.to_lowercase().contains(&query.to_lowercase()){
+            lines_found.push(line);
+        }
+    }
+    lines_found
+}
 
 #[cfg(test)]
 mod tests{
     use super::*;
     #[test]
-    fn find_lines_one_line(){
-        let query: String = String::from("bird");
+    fn case_sensitive_find_lines_one_line(){
+        let query: String = String::from("Or");
 
         let content = "\
 Or the blue parakeet does not return
@@ -49,24 +58,43 @@ though one may wake in the morning
 thinking mother's call is the bird.";
 
         assert_eq!(
-            vec!["thinking mother's call is the bird."],
+            vec!["Or the blue parakeet does not return"],
             find_lines(&query, content)
         );
     }
     #[test]
-    fn find_lines_two_lines(){
+    fn case_sensitive_find_lines_two_lines(){
         let query: String = String::from("in ");
 
         let content = "\
 Or the blue parakeet does not return
 from the little grave in the fern garden
 though one may wake in the morning
-thinking mother's call is the bird.";
+In thinking mother's call is the bird.";
 
         assert_eq!(
             vec!["from the little grave in the fern garden",
             "though one may wake in the morning"],
             find_lines(&query, content)
+        );
+    }
+
+    #[test]
+    fn case_insensitive_find_lines_three_line(){
+        let query: String = String::from("Or");
+
+        let content = "\
+Or the blue parakeet does not return
+from the little grave in the fern garden
+though one may wake in the morning
+thinking mother's call is the bird.
+oR test";
+
+        assert_eq!(
+            vec!["Or the blue parakeet does not return",
+                 "though one may wake in the morning",
+                 "oR test"],
+            case_insensitive_find_lines(&query, content)
         );
     }
 }
