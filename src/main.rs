@@ -4,8 +4,8 @@ use std::process;
 use minigrep::Request;
 use minigrep::handle;
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let cli_request: Request = Request::build(&args).unwrap_or_else(|err|{
+    let args = env::args();
+    let cli_request: Request = Request::build(args).unwrap_or_else(|err|{
         eprintln!("Failed to parse args: {}",err);
         process::exit(1)
     });

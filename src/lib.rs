@@ -7,12 +7,18 @@ pub struct Request {
     pub ignore_case: bool
 }
 impl Request {
-    pub fn build(args: &[String]) -> Result<Request, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough args given! At least 3 is required.")
-        }
-        let query: String = args[1].clone();
-        let file_path: String = args[2].clone();
+    pub fn build(mut args: impl Iterator<Item = String>) -> Result<Request, &'static str> {
+        args.next(); // Skipping program name
+        let query: String = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Couldn't find query argument!")
+        };
+
+        let file_path: String = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Couldn't find file path argument!")
+        };
+
         let ignore_case: bool = env::var("IGNORE_CASE").is_ok();
         Ok(Request { query, file_path, ignore_case})
     }
