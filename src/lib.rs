@@ -41,22 +41,11 @@ pub fn handle(request: Request) -> Result<(),Box<dyn Error>>{
 }
 
 pub fn find_lines<'a>(query: &str, content: &'a str) -> Vec<&'a str>{
-    let mut lines_found:Vec<&str> = Vec::new();
-    for line in content.lines(){
-        if line.contains(query){
-            lines_found.push(line);
-        }
-    }
-    lines_found
+    content.lines().filter(|line| line.contains(query)).collect()
 }
 pub fn case_insensitive_find_lines<'a>(query: &str, content: &'a str) -> Vec<&'a str>{
-    let mut lines_found:Vec<&str> = Vec::new();
-    for line in content.lines(){
-        if line.to_lowercase().contains(&query.to_lowercase()){
-            lines_found.push(line);
-        }
-    }
-    lines_found
+    let lower_case_query = query.to_lowercase();
+    content.lines().filter(|line| line.to_lowercase().contains(&lower_case_query)).collect()
 }
 
 #[cfg(test)]
